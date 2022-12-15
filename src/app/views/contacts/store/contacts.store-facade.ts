@@ -21,8 +21,10 @@ export class ContactsStoreFacade {
     )
 
     this.contacts$ = combineLatest([this.store, this.curPage$]).pipe(
-        map(([state, page]) => {
-            return state.contacts.contacts2.data[page]
+        map(([state, curPage]) => {
+            const page = state.contacts.contacts2.data[curPage]
+            if (!page) return []
+            return page.list.map((item) => page.byId[item])
         })
     )
 
