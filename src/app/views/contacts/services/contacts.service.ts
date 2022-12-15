@@ -28,7 +28,7 @@ export class ContactsService {
   }
 
   update(contact: Partial<Contact>): Observable<Contact> {
-    return this.http.patch<Contact>(`${environment.appApi.baseUrl}/contacts/${contact.id}`, contact);
+    return this.http.patch<Contact>(`${environment.appApi.baseUrl}/users/${contact.id}`, contact);
   }
 
 

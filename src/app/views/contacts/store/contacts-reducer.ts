@@ -44,9 +44,9 @@ export const reducer = createReducer<State>(
   on(createSuccess, (state, {contact}) =>
     contactsAdapter.addOne(contact, state)
   ),
-  on(updateSuccess, (state, {contact}) =>
-    contactsAdapter.updateOne({id: contact.id, changes: contact}, state)
-  ),
+//   on(updateSuccess, (state, {contact}) =>
+//     contactsAdapter.updateOne({id: contact.id, changes: contact}, state)
+//   ),
   on(removeSuccess, (state, {id}) =>
     contactsAdapter.removeOne(id, state)
   )
@@ -89,13 +89,23 @@ export const newReducer = createReducer(
     }
   }),
   on(loadSuccess, (state, {contact}) => {
-    const id = contact.id
-    
     return {
       ...state,
       data: {
         ...state.data,
         [contact.id]: contact
+      }
+    }
+  }),
+  on(updateSuccess, (state, {contact}) => {
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        [contact.id]: {
+          ...state.data[contact.id],
+          ...contact
+        }
       }
     }
   })
