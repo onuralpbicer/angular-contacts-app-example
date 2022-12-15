@@ -31,6 +31,8 @@ export const {
   selectAll: getAllContacts,
 } = fromContacts.contactsAdapter.getSelectors(getContactsEntitiesState);
 
+// export const selectCurrengPage = ()
+
 export const getContactById = (id: number) => createSelector(
   getContactsEntitiesState,
   fromContacts.getContactById(id)

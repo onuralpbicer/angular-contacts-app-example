@@ -2,18 +2,22 @@
   <thead class="header">
   <tr>
     <th>#</th>
-    <th>Name</th>
+    <th></th>
+    <th>First Name</th>
+    <th>Last Name</th>
     <th>Email</th>
-    <th>Phone</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
   <tr class="contact-row" *ngFor="let c of contacts; trackBy: contactsTrackByFn">
     <th scope="row">{{c.id}}</th>
-    <td>{{c.name}}</td>
+    <td>
+      <img *ngIf="!!c.avatar" class="avatar" src="{{c.avatar}}" alt="{{c.avatar}}" height="32"/>
+    </td>
+    <td>{{c.first_name}}</td>
+    <td>{{c.last_name}}</td>
     <td>{{c.email}}</td>
-    <td>{{c.phone}}</td>
     <td>
 
       <span class="float-right">
