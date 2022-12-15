@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {Contact} from '@app/core/models';
+import {Contact, Contact2, PaginatedResponse} from '@app/core/models';
 import {environment} from '@app/env';
 
 
@@ -11,9 +11,10 @@ export class ContactsService {
   constructor(private http: HttpClient ) { }
 
 
-  index(): Observable<Contact[]> {
+  index(page: number): Observable<PaginatedResponse<Contact2>> {
+    const params = new URLSearchParams({page: page.toString()})
     return this.http
-        .get<Contact[]>(`${environment.appApi.baseUrl}/contacts`);
+        .get<PaginatedResponse<Contact2>>(`${environment.appApi.baseUrl}/users` + "?" + params);
   }
 
   show(conactId: number): Observable<Contact> {

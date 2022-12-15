@@ -3,12 +3,14 @@ import {Action, combineReducers, createFeatureSelector, createSelector} from '@n
 
 export interface ContactsState {
   contacts: fromContacts.State;
+  contacts2: fromContacts.NewState;
 }
 
 /** Provide reducers with AoT-compilation compliance */
 export function reducers(state: ContactsState | undefined, action: Action) {
   return combineReducers({
-    contacts: fromContacts.reducer
+    contacts: fromContacts.reducer,
+    contacts2: fromContacts.newReducer,
   })(state, action)
 }
 

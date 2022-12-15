@@ -35,9 +35,9 @@ export const INIT_STATE: State = contactsAdapter.getInitialState({
 
 export const reducer = createReducer<State>(
   INIT_STATE,
-  on(loadAllSuccess, (state, {contacts}) =>
-    contactsAdapter.addAll(contacts, state)
-  ),
+  // on(loadAllSuccess, (state, {contacts}) =>
+  //   contactsAdapter.addAll(contacts, state)
+  // ),
   on(loadSuccess, (state, {contact}) =>
     contactsAdapter.upsertOne(contact, state)
   ),
@@ -51,5 +51,32 @@ export const reducer = createReducer<State>(
     contactsAdapter.removeOne(id, state)
   )
 );
+
+export interface NewState {
+  totalPages: number
+  totalItems: number
+  data: Record<Contact['id'], Contact[]>
+}
+
+const INIT_STATE_NEW: NewState = {
+  totalItems: 0, 
+  totalPages: 0,
+  data: {}
+}
+
+export const newReducer = createReducer(
+  INIT_STATE_NEW, 
+  on(loadAllSuccess, (state, {contacts}) => {
+    return {
+      ...state,
+      totalItems: contacts.total,
+      totalPages: contacts.total_pages,
+      data: {
+        ...state.data,
+        [contacts.page]: contacts.data
+      }
+    }
+  })
+)
 
 export const getContactById = (id: number) => (state: State) => state.entities[id];

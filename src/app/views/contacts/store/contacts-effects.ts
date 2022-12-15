@@ -36,11 +36,11 @@ export class ContactsEffects {
 
   loadAll$ = createEffect( () => this.actions$.pipe(
     ofType(loadAll), /* When action is dispatched */
-    startWith(loadAll()),
+    // startWith(loadAll()),
     /* Hit the Contacts Index endpoint of our REST API */
     /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
     /* 'Contacts Reducers' will take care of the rest */
-    switchMap(() => this.contactsService.index().pipe(
+    switchMap(({page}) => this.contactsService.index(page).pipe(
       map(contacts => loadAllSuccess({contacts}))
     )),
   ));
