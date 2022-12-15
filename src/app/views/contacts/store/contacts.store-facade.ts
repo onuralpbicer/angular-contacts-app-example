@@ -53,7 +53,7 @@ export class ContactsStoreFacade {
 
   getContactById(id: number) {
     return this.store.pipe(
-      select(fromContacts.getContactById(id))
+      select((state) => state.contacts.contacts2.data[id])
     )
   }
 }
