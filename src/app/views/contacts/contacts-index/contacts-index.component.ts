@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Contact } from '@app/core/models';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ContactsStoreFacade } from '@app/contacts-store/contacts.store-facade';
-import { Observable, Subscription } from 'rxjs'
+import { combineLatest, Observable, Subject, Subscription } from 'rxjs'
+import { debounceTime, map } from 'rxjs/operators'
 
 
 @Component({
@@ -11,11 +12,14 @@ import { Observable, Subscription } from 'rxjs'
   styleUrls: ['./contacts-index.component.sass'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ContactsIndexComponent implements OnInit, OnDestroy {
-
-  contacts$ = this.contactsFacade.contacts$;
+export class ContactsIndexComponent implements OnInit, OnDestroy, AfterViewInit {
+  contacts$: Observable<Contact[]>;
 
   private pageNumSubscription: Subscription;
+
+  searchField = new Subject<string>()
+
+  filter$: Observable<string>
 
   constructor(private contactsFacade: ContactsStoreFacade, private router: Router, private activatedRoute: ActivatedRoute) { }
 
@@ -23,10 +27,43 @@ export class ContactsIndexComponent implements OnInit, OnDestroy {
     this.pageNumSubscription = this.contactsFacade.curPage$.subscribe((page) => {
         this.contactsFacade.loadPage(page)
     })
+
+    this.filter$ = this.searchField.asObservable()
+        .pipe(debounceTime(500))
+
+    this.contacts$ = combineLatest([
+        this.contactsFacade.contacts$,
+        this.filter$,
+    ]).pipe(
+        map(([contacts, filter ]) => {
+          // no filter if it's less than 2 chars
+          if (filter.length < 2)
+            return contacts
+
+          const filterStr = filter.toLowerCase()
+          return contacts.filter((contact) => {
+            if (contact.first_name.toLowerCase().includes(filterStr)) return true
+            else if (contact.last_name.toLowerCase().includes(filterStr)) return true
+            else if (contact.email.toLowerCase().includes(filterStr)) return true
+            else if (contact.avatar.toLowerCase().includes(filterStr)) return true
+            else return false
+          })
+        })
+    )
   }
+
+  ngAfterViewInit() {
+     // this is required to make the combineLatest emit
+    this.searchField.next('')
+  }
+  
 
   ngOnDestroy(): void {
     this.pageNumSubscription.unsubscribe()
+  }
+
+  onSearchChange(change: string) {
+    this.searchField.next(change)
   }
 
   goToPage(page: number) {

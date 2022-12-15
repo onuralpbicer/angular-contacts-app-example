@@ -2,7 +2,9 @@
 
 
 
-
+<div class="search-container">
+    <input class="search-input" placeholder="Search" (input)="onSearchChange($event.target.value)" />
+</div>
 <app-contact-list [contacts]="contacts$ | async"
                   [curPage]="contactsFacade.curPage$ | async"
                   [totalPages]="contactsFacade.totalPages$ | async"
