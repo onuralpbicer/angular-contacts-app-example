@@ -55,7 +55,7 @@ export const reducer = createReducer<State>(
 export interface NewState {
   totalPages: number
   totalItems: number
-  pages: Record<Contact['id'], Contact['id'][]>
+  pages: Record<number, Contact['id'][]>
   data: Record<Contact['id'], Contact>
 }
 
