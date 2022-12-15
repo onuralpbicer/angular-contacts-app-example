@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import { Contact, Contact2, PaginatedResponse } from '@app/core/models';
+import { Contact,  PaginatedResponse } from '@app/core/models';
 
 export const loadAll = createAction(
   '[Contacts] Load all',
@@ -28,7 +28,7 @@ export const remove = createAction(
 
 export const loadAllSuccess = createAction(
   '[Contacts] Load all success',
-  props<{contacts: PaginatedResponse<Contact2>}>()
+  props<{contacts: PaginatedResponse<Contact>}>()
 );
 
 export const loadSuccess = createAction(
