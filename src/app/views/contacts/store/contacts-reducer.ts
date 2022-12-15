@@ -41,9 +41,9 @@ export const reducer = createReducer<State>(
 //   on(loadSuccess, (state, {contact}) =>
 //     contactsAdapter.upsertOne(contact, state)
 //   ),
-  on(createSuccess, (state, {contact}) =>
-    contactsAdapter.addOne(contact, state)
-  ),
+  // on(createSuccess, (state, {contact}) =>
+  //   contactsAdapter.addOne(contact, state)
+  // ),
 //   on(updateSuccess, (state, {contact}) =>
 //     contactsAdapter.updateOne({id: contact.id, changes: contact}, state)
 //   ),
@@ -89,6 +89,15 @@ export const newReducer = createReducer(
     }
   }),
   on(loadSuccess, (state, {contact}) => {
+    return {
+      ...state,
+      data: {
+        ...state.data,
+        [contact.id]: contact
+      }
+    }
+  }),
+  on(createSuccess, (state, {contact}) => {
     return {
       ...state,
       data: {

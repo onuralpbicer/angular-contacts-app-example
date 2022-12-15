@@ -24,7 +24,7 @@ export class ContactsService {
   }
 
   create(contact: Contact): Observable<Contact> {
-    return this.http.post<Contact>(`${environment.appApi.baseUrl}/contacts`, contact);
+    return this.http.post<Contact>(`${environment.appApi.baseUrl}/users`, contact);
   }
 
   update(contact: Partial<Contact>): Observable<Contact> {
