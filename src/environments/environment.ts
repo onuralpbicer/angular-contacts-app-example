@@ -8,7 +8,7 @@ export const environment = {
     baseUrl: 'https://reqres.in/api'
   },
   socketConfig: {
-    url: 'http://localhost:3000',
+    url: 'https://reqres.in/api',
     opts: {
       transports: ['websocket']
     }

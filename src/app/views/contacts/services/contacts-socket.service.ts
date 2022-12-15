@@ -14,7 +14,7 @@ export class ContactsSocketService extends Socket {
 
   constructor() {
     super({
-      url: `${environment.socketConfig.url}/contacts`,
+      url: `${environment.socketConfig.url}/users`,
       options: environment.socketConfig.opts
     });
   }
