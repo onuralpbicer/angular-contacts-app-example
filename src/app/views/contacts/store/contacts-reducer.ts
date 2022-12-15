@@ -52,16 +52,11 @@ export const reducer = createReducer<State>(
   )
 );
 
-export interface Normalized<T extends {id?: number}> {
-  byId: Record<T['id'], T>
-  list: T['id'][]
-}
-
 export interface NewState {
   totalPages: number
   totalItems: number
-  pageContents: Record<Contact['id'], number>
-  data: Record<number, Normalized<Contact>>
+  pageContents: Record<Contact['id'], Contact['id'][]>
+  data: Record<Contact['id'], Contact>
 }
 
 const INIT_STATE_NEW: NewState = {
@@ -74,29 +69,22 @@ const INIT_STATE_NEW: NewState = {
 export const newReducer = createReducer(
   INIT_STATE_NEW, 
   on(loadAllSuccess, (state, {contacts}) => {
-
-    const page: Normalized<Contact> = {
-      byId: contacts.data.reduce((acc, cur) => {
-          acc[cur.id] = cur
-          return acc
-        } ,{}
-      ),
-      list: contacts.data.map((cur) => cur.id)
-    }
+ 
+    const newData: Record<Contact['id'], Contact> = contacts.data.reduce((acc, cur) => {
+        acc[cur.id] = cur
+        return acc
+    } , {})
     return {
       ...state,
       totalItems: contacts.total,
       totalPages: contacts.total_pages,
       pageContents: {
         ...state.pageContents,
-        ...contacts.data.reduce((acc, cur) => {
-            acc[cur.id] = contacts.page
-            return acc
-        }, {})
+        [contacts.page]: contacts.data.map((cur) => cur.id)
       },
       data: {
         ...state.data,
-        [contacts.page]: page
+        ...newData,
       }
     }
   })

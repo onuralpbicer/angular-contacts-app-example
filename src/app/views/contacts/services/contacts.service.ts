@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Contact,  PaginatedResponse} from '@app/core/models';
 import {environment} from '@app/env';
+import { map } from 'rxjs/operators'
 
 
 @Injectable()
@@ -19,7 +20,7 @@ export class ContactsService {
 
   show(conactId: number): Observable<Contact> {
     return this.http
-        .get<Contact>(`${environment.appApi.baseUrl}/contacts/${conactId}`);
+        .get<{data: Contact}>(`${environment.appApi.baseUrl}/users/${conactId}`).pipe(map((res) => res.data));
   }
 
   create(contact: Contact): Observable<Contact> {
