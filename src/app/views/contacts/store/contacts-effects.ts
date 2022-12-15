@@ -80,8 +80,7 @@ export class ContactsEffects {
     ofType(remove),
     pluck('id'),
     switchMap( id => this.contactsService.destroy(id).pipe(
-      pluck('id'),
-      map(id => removeSuccess({id}))
+      map(() => removeSuccess({id}))
     ))
   ));
 

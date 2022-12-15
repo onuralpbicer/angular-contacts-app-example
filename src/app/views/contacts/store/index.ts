@@ -3,14 +3,12 @@ import {Action, combineReducers, createFeatureSelector, createSelector} from '@n
 
 export interface ContactsState {
   contacts: fromContacts.State;
-  contacts2: fromContacts.NewState;
 }
 
 /** Provide reducers with AoT-compilation compliance */
 export function reducers(state: ContactsState | undefined, action: Action) {
   return combineReducers({
     contacts: fromContacts.reducer,
-    contacts2: fromContacts.newReducer,
   })(state, action)
 }
 
@@ -25,15 +23,4 @@ export const getContactsState = createFeatureSelector<ContactsState>('contacts')
 export const getContactsEntitiesState = createSelector(
   getContactsState,
   state => state.contacts
-);
-
-export const {
-  selectAll: getAllContacts,
-} = fromContacts.contactsAdapter.getSelectors(getContactsEntitiesState);
-
-// export const selectCurrengPage = ()
-
-export const getContactById = (id: number) => createSelector(
-  getContactsEntitiesState,
-  fromContacts.getContactById(id)
 );

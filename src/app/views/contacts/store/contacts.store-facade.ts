@@ -22,13 +22,13 @@ export class ContactsStoreFacade {
 
     this.contacts$ = combineLatest([this.store, this.curPage$]).pipe(
         map(([state, curPage]) => {
-            const page = state.contacts.contacts2.pages[curPage]
+            const page = state.contacts.contacts.pages[curPage]
             if (!page) return []
-            return page.map((item) => state.contacts.contacts2.data[item])
+            return page.map((item) => state.contacts.contacts.data[item])
         })
     )
 
-    this.totalPages$ = this.store.select((state) => state.contacts.contacts2.totalPages)
+    this.totalPages$ = this.store.select((state) => state.contacts.contacts.totalPages)
   }
 
   loadPage(page: number) {
@@ -53,7 +53,7 @@ export class ContactsStoreFacade {
 
   getContactById(id: number) {
     return this.store.pipe(
-      select((state) => state.contacts.contacts2.data[id])
+      select((state) => state.contacts.contacts.data[id])
     )
   }
 }
