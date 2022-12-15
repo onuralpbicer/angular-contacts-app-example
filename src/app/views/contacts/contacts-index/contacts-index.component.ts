@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Contact } from '@app/core/models';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ContactsStoreFacade } from '@app/contacts-store/contacts.store-facade';
-import { Subscription } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { Observable, Subscription } from 'rxjs'
 
 
 @Component({
@@ -18,20 +17,27 @@ export class ContactsIndexComponent implements OnInit, OnDestroy {
 
   private pageNumSubscription: Subscription;
 
-  constructor(private contactsFacade: ContactsStoreFacade, private router: Router, private route: ActivatedRoute) { }
+  constructor(private contactsFacade: ContactsStoreFacade, private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit() {
-    this.pageNumSubscription = this.route.queryParams
-        .pipe(
-            map((params) => Number(params.page ?? 1))
-        )
-        .subscribe((page) => {
-            this.contactsFacade.loadPage(page)
-        })
+  ngOnInit() { 
+    this.pageNumSubscription = this.contactsFacade.curPage$.subscribe((page) => {
+        this.contactsFacade.loadPage(page)
+    })
   }
 
   ngOnDestroy(): void {
     this.pageNumSubscription.unsubscribe()
+  }
+
+  goToPage(page: number) {
+    const queryParams: Params = { page };
+
+    this.router.navigate([],  
+        {
+          relativeTo: this.activatedRoute,
+          queryParams: queryParams, 
+          queryParamsHandling: 'merge', // remove to replace all query params by provided
+        })
   }
 
   editContact(contact: Contact) { 

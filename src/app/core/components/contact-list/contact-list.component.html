@@ -41,6 +41,11 @@
 
   </tbody>
 </table>
+<div class="nav-container">
+    <button (click)="changePage(curPage - 1)" [disabled]="curPage - 1 <= 0">Left</button>
+    {{ curPage }}
+    <button (click)="changePage(curPage + 1)" [disabled]="curPage + 1 > totalPages">Right</button>
+</div>
 
 <ng-template #loading>
   <span>loading contacts...</span>

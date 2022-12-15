@@ -12,17 +12,21 @@ import { map } from 'rxjs/operators'
 export class ContactsStoreFacade {
 
   contacts$: Observable<Contact[]>
+  curPage$: Observable<number>;
+  totalPages$: Observable<number>;
 
   constructor(private store: Store<{contacts: fromContacts.ContactsState}>, private route: ActivatedRoute) {
-    const currentPage = this.route.queryParams.pipe(
+    this.curPage$ = this.route.queryParams.pipe(
         map((params) => Number(params.page ?? 1))
     )
 
-    this.contacts$ = combineLatest([this.store, currentPage]).pipe(
+    this.contacts$ = combineLatest([this.store, this.curPage$]).pipe(
         map(([state, page]) => {
             return state.contacts.contacts2.data[page]
         })
     )
+
+    this.totalPages$ = this.store.select((state) => state.contacts.contacts2.totalPages)
   }
 
   loadPage(page: number) {

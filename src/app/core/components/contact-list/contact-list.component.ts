@@ -11,9 +11,12 @@ export class ContactListComponent implements OnInit {
 
 
   @Input() contacts: Contact[];
+  @Input() curPage: number;
+  @Input() totalPages: number;
   @Output() edit = new EventEmitter<Contact>();
   @Output() show = new EventEmitter<Contact>();
   @Output() remove = new EventEmitter<Contact>();
+  @Output() goToPage = new EventEmitter<number>();
 
   contactsTrackByFn = (index: number, contact: Contact) => contact.id;
 
@@ -21,6 +24,9 @@ export class ContactListComponent implements OnInit {
 
   ngOnInit() {}
 
+  changePage(page: number) {
+    this.goToPage.emit(page)
+  }
 
   showDetails(contact: Contact) {
     this.show.emit(contact);
