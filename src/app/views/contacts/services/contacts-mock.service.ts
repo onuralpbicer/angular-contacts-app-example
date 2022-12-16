@@ -1,27 +1,42 @@
 import { Observable, of } from 'rxjs';
-import { Contact } from '@app/core/models';
+import { Contact, PaginatedResponse } from '@app/core/models';
 
 
 export class ContactsServiceMock {
 
   contacts = [{
     id: 1,
-    name: 'john',
+    first_name: 'john',
+    last_name: 'doe',
     email: 'john@gmail.com'
   }, {
     id: 2,
-    name: 'adam',
+    first_name: 'adam',
+    last_name: 'smith',
     email: 'adam@gmail.com'
   }];
 
-  index(): Observable<Contact[]> {
-   return of(this.contacts);
+  index(): Observable<PaginatedResponse<Contact>[]> {
+   return of([{
+      page: 1,
+      per_page: 6,
+      total: 1,
+      total_pages: 1,
+      data: [{
+        id: 1,
+        first_name: 'john',
+        last_name: 'doe',
+        email: 'john@gmail.com'
+      }]
+    }]
+   );
   }
 
   show(conactId: number): Observable<Contact> {
     return of({
       id: 1,
-      name: 'john',
+      first_name: 'john',
+      last_name: 'doe',
       email: 'john@gmail.com'
     });
   }
