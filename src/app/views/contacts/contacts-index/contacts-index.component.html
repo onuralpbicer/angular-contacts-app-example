@@ -12,4 +12,5 @@
                   (remove)="deleteContact($event)"
                   (edit)="editContact($event)"
                   (goToPage)="goToPage($event)"
+                  [filter]="filter$ | async"
 ></app-contact-list>

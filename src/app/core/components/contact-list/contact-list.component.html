@@ -15,9 +15,9 @@
     <td>
       <img *ngIf="!!c.avatar" class="avatar" src="{{c.avatar}}" alt="{{c.avatar}}" height="32"/>
     </td>
-    <td>{{c.first_name}}</td>
-    <td>{{c.last_name}}</td>
-    <td>{{c.email}}</td>
+    <td [innerHTML]="filteredContent(c.first_name)"></td>
+    <td [innerHTML]="filteredContent(c.last_name)"></td>
+    <td [innerHTML]="filteredContent(c.email)"></td>
     <td>
 
       <span class="float-right">
