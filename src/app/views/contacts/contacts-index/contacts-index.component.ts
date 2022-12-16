@@ -29,7 +29,7 @@ export class ContactsIndexComponent implements OnInit, OnDestroy, AfterViewInit 
     })
 
     this.filter$ = this.searchField.asObservable()
-        .pipe(debounceTime(500))
+        .pipe(debounceTime(500), map((filter) => filter.toLowerCase()))
 
     this.contacts$ = combineLatest([
         this.contactsFacade.contacts$,
@@ -40,12 +40,11 @@ export class ContactsIndexComponent implements OnInit, OnDestroy, AfterViewInit 
           if (filter.length < 2)
             return contacts
 
-          const filterStr = filter.toLowerCase()
           return contacts.filter((contact) => {
-            if (contact.first_name.toLowerCase().includes(filterStr)) return true
-            else if (contact.last_name.toLowerCase().includes(filterStr)) return true
-            else if (contact.email.toLowerCase().includes(filterStr)) return true
-            else if (contact.avatar.toLowerCase().includes(filterStr)) return true
+            if (contact.first_name.toLowerCase().includes(filter)) return true
+            else if (contact.last_name.toLowerCase().includes(filter)) return true
+            else if (contact.email.toLowerCase().includes(filter)) return true
+            else if (contact.avatar.toLowerCase().includes(filter)) return true
             else return false
           })
         })
