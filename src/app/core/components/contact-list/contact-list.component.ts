@@ -32,9 +32,9 @@ export class ContactListComponent implements OnInit {
     if (this.filter?.length === 0 || startIndex === -1) return content
 
     return content.slice(0, startIndex) + 
-          "<span class=\"highlight\">" + 
+          "<mark>" + 
           content.slice(startIndex, startIndex + this.filter.length) + 
-          "</span>" + 
+          "</mark>" + 
           content.slice(startIndex + this.filter.length)
   }
 
