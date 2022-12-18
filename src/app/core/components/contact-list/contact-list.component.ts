@@ -29,7 +29,7 @@ export class ContactListComponent implements OnInit {
   filteredContent(content: string) {
     const startIndex = content.toLowerCase().indexOf(this.filter)
     
-    if (startIndex === -1) return content
+    if (this.filter?.length === 0 || startIndex === -1) return content
 
     return content.slice(0, startIndex) + 
           "<span class=\"highlight\">" + 
